@@ -1,5 +1,5 @@
 import { passportAuth } from "blitz"
-import { Strategy as CoinbaseStrategy } from 'passport-coinbase';
+const CoinbaseStrategy = require('passport-coinbase').Strategy;
 
 import db from "db"
 import uploadCoinbaseTokens from '../uploadCoinbaseTokens'
