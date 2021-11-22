@@ -1,5 +1,7 @@
-import { ReactNode } from "react"
+import { ReactNode, Suspense } from "react"
 import { Head } from "blitz"
+
+import Appbar from 'app/core/components/appbar'
 
 type LayoutProps = {
   title?: string
@@ -13,8 +15,10 @@ const Layout = ({ title, children }: LayoutProps) => {
         <title>{title || "blitz-slyderz"}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      {children}
+      <Appbar />
+      <main>
+        {children}
+      </main>
     </>
   )
 }

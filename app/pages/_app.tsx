@@ -1,37 +1,44 @@
+import React, { Suspense } from "react";
 import {
   AppProps,
+  ErrorBoundary,
   ErrorComponent,
-  useRouter,
   AuthenticationError,
   AuthorizationError,
   ErrorFallbackProps,
-} from "blitz"
-import { ErrorBoundary } from "react-error-boundary"
-import { queryCache } from "react-query"
-import LoginForm from "app/auth/components/LoginForm"
+  useQueryErrorResetBoundary,
+} from "blitz";
+import { ThemeProvider } from "@material-ui/core/styles";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { Provider } from "react-redux";
+
+import store from "integrations/redux";
+import { theme } from "integrations/material-ui";
+import ReauthenicateCoinbase from "app/auth/components/ReauthenicateCoinbase"
 
 export default function App({ Component, pageProps }: AppProps) {
   const getLayout = Component.getLayout || ((page) => page)
-  const router = useRouter()
 
   return (
-    <ErrorBoundary
-      FallbackComponent={RootErrorFallback}
-      resetKeys={[router.asPath]}
-      onReset={() => {
-        // This ensures the Blitz useQuery hooks will automatically refetch
-        // data any time you reset the error boundary
-        queryCache.resetErrorBoundaries()
-      }}
-    >
-      {getLayout(<Component {...pageProps} />)}
-    </ErrorBoundary>
-  )
+    <Suspense fallback="Loading">
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <ErrorBoundary
+            FallbackComponent={RootErrorFallback}
+            onReset={useQueryErrorResetBoundary().reset}
+          >
+            {getLayout(<Component {...pageProps} />)}
+          </ErrorBoundary>
+        </ThemeProvider>
+      </Provider>
+    </Suspense>
+  );
 }
 
 function RootErrorFallback({ error, resetErrorBoundary }: ErrorFallbackProps) {
   if (error instanceof AuthenticationError) {
-    return <LoginForm onSuccess={resetErrorBoundary} />
+    return <ReauthenicateCoinbase onSuccess={resetErrorBoundary} />
   } else if (error instanceof AuthorizationError) {
     return (
       <ErrorComponent
