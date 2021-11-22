@@ -2,7 +2,7 @@
   "name": "blitz-slyderz",
   "version": "1.0.0",
   "scripts": {
-    "dev": "concurrently 'blitz dev' 'quirrel'",
+    "dev": "concurrently --raw \"quirrel\" \"next dev\"",
     "build": "blitz build",
     "start": "blitz start",
     "studio": "blitz prisma studio",

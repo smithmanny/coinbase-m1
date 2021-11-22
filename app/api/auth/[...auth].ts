@@ -46,7 +46,7 @@ export default passportAuth((context) => ({
           })
 
           if (user.role === "ADMIN") {
-            await uploadCoinbaseTokens.enqueue(accessToken)
+            // await uploadCoinbaseTokens.enqueue(accessToken)
           }
 
           const publicData = {
