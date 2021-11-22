@@ -5,7 +5,7 @@ import fetchPaymentMethodsQuery from "app/queries/fetchPaymentMethods"
 import createBuyOrderMutation from "app/mutations/createBuyOrder"
 
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer"
-import Form, { Checkboxes, Select, TextField } from "app/core/components/form"
+import Form, { Select, TextField } from "app/core/components/form"
 import Grid from 'app/core/components/shared/Grid'
 import Button from 'app/core/components/shared/Button'
 import Typography from 'app/core/components/shared/Typography'
@@ -51,9 +51,9 @@ const CreateBuy: BlitzPage<PagePropType> = (props) => {
       >
         <Grid container spacing={4}>
           <Grid item xs={12}>
-            <Typography variant="h6" className={classes.title}>
+            {/* <Typography variant="h6" className={classes.title}>
               <strong>Select Payment Source</strong>
-            </Typography>
+            </Typography> */}
             <Select
               name="selectedPaymentMethod"
               label="Payment Method"
@@ -64,18 +64,28 @@ const CreateBuy: BlitzPage<PagePropType> = (props) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="h6" className={classes.title}>
+            {/* <Typography variant="h6" className={classes.title}>
               <strong>Enter Amount</strong>
-            </Typography>
+            </Typography> */}
             <TextField
               name="amount"
               placeholder="100.00"
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="h6" className={classes.title}>
+            {/* <Typography variant="h6" className={classes.title}>
               <strong>Select Tokens</strong>
-            </Typography>
+            </Typography> */}
+            {/* <Select
+              name="selectedTokens"
+              label="Payment Method"
+              items={allAccounts.map(account => ({
+                label: account.currency.code,
+                value: account.id,
+              }))}
+              isAsync
+              isMulti
+            /> */}
           </Grid>
 
           {/* Submit */}

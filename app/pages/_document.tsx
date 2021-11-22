@@ -51,7 +51,7 @@ class MyDocument extends Document {
         <body>
           <Main />
           <BlitzScript />
-          <style jsx global>{`
+          <style>{`
             /* Other global styles such as 'html, body' etc... */
             body {
               height: 100vh;

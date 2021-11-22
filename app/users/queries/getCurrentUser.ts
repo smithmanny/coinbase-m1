@@ -11,7 +11,7 @@ export default async function getCurrentUser(input, ctx: Ctx) {
 
   const user = await db.user.findFirst({
     where: { id: userId },
-    select: { id: true, name: true, email: true, role: true, accessToken: true },
+    select: { id: true, name: true, email: true, role: true },
   })
 
   return user
