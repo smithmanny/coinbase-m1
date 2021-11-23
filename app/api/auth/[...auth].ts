@@ -21,7 +21,8 @@ export default passportAuth((context) => ({
         account: 'all',
         clientID: process.env.COINBASE_CLIENT_ID,
         clientSecret: process.env.COINBASE_CLIENT_SECRET,
-        callbackURL: '/api/auth/coinbase/callback',
+        callbackURL: `${process.env.SITE_URL}`,
+        // callbackURL: `${process.env.SITE_URL}/api/auth/coinbase/callback`,
         includeEmail: true,
       },
         async function (accessToken, refreshToken, profile: ProfileInterface, done) {
