@@ -50,4 +50,6 @@ model Token {
   updatedAt   DateTime @updatedAt
   code        String   @unique
   name        String   @unique
+  tokenId     String   @unique
+  isFixed     Boolean  @default(false)
 }

@@ -39,7 +39,6 @@ export const getServerSideProps = async ({ req, res }) => {
       }
     }
   } catch (error) {
-    // res.writeHead(302, { location: "/api/auth/coinbase"}).end()
     return { props: {}}
   }
 }

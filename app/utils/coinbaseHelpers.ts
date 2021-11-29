@@ -1,3 +1,5 @@
+import { AuthenticationError } from "blitz"
+
 interface CoinbaseAccountBalanceType {
   amount: string
   currency: string
@@ -76,7 +78,7 @@ export const fetchCoinbaseApi = async ({ method, accessToken, route, body = {} }
     return Promise.resolve(data);
   } else {
     if (res.status === 401) {
-      return Promise.reject('Create new refresh token')
+      throw new AuthenticationError()
     }
     return Promise.reject('Error fetching coinbase API')
   }
@@ -85,8 +87,8 @@ export const fetchCoinbaseApi = async ({ method, accessToken, route, body = {} }
 export const refreshTokens = async(refreshToken) => {
   const body = {
     "grant_type": "refresh_token",
-    "client_id": process.env.COINBASE_CLIENT_ID,
-    "client_secret": process.env.COINBASE_CLIENT_SECRET,
+    "client_id": process.env.BLITZ_PUBLIC_COINBASE_CLIENT_ID,
+    "client_secret": process.env.BLITZ_PUBLIC_COINBASE_CLIENT_SECRET,
     "refresh_token": refreshToken
   }
 

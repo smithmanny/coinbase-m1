@@ -61,6 +61,7 @@ Select.defaultProps = {
   isAsync: false,
   isMulti: false,
   isSearchable: false,
+  xs: 12
 }
 
 Select.propTypes = {
@@ -71,7 +72,8 @@ Select.propTypes = {
   items: PropTypes.arrayOf(PropTypes.shape({
     label: PropTypes.string,
     value: PropTypes.string,
-  })).isRequired
+  })).isRequired,
+  xs: PropTypes.number
 }
 
 export default Select;

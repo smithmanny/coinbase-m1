@@ -12,14 +12,7 @@ import logoutMutation from 'app/auth/mutations/logout';
 
 import Popover from "app/core/components/shared/Popover";
 
-const routes = [
-  {
-    id: 0,
-    icon: AddIcon,
-    name: "Account",
-    route: "/account",
-  },
-];
+const routes = [];
 
 const AccountPopover = ({ ...props }) => {
   const classes = accountPopoverStyles();

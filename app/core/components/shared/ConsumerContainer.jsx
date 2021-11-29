@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import Container from './Container'
 import { makeStyles } from 'integrations/material-ui'
 
@@ -11,7 +12,7 @@ const styles = makeStyles((theme) => ({
 const ConsumerContainer = ({ children, ...props }) => {
   const classes = styles();
   return (
-    <Container {...props} className={classes.container}>
+    <Container {...props} className={classNames(classes.container, props.className)}>
       {children}
     </Container>
   )

@@ -2,7 +2,6 @@ import { passportAuth } from "blitz"
 const CoinbaseStrategy = require('passport-coinbase').Strategy;
 
 import db from "db"
-import uploadCoinbaseTokens from '../uploadCoinbaseTokens'
 
 interface ProfileInterface {
   displayName: string,
@@ -19,9 +18,9 @@ export default passportAuth((context) => ({
       },
       strategy: new CoinbaseStrategy({
         account: 'all',
-        clientID: process.env.COINBASE_CLIENT_ID,
-        clientSecret: process.env.COINBASE_CLIENT_SECRET,
-        callbackURL: `${process.env.SITE_URL}`,
+        clientID: process.env.BLITZ_PUBLIC_COINBASE_CLIENT_ID,
+        clientSecret: process.env.BLITZ_PUBLIC_COINBASE_CLIENT_SECRET,
+        callbackURL: `${process.env.BLITZ_PUBLIC_SITE_CALLBACK_URL}`,
         // callbackURL: `${process.env.SITE_URL}/api/auth/coinbase/callback`,
         includeEmail: true,
       },
@@ -46,13 +45,9 @@ export default passportAuth((context) => ({
             },
           })
 
-          if (user.role === "ADMIN") {
-            // await uploadCoinbaseTokens.enqueue(accessToken)
-          }
-
           const publicData = {
             userId: user.id,
-            roles: [user.role],
+            role: user.role,
             source: "coinbase",
             accessToken,
             refreshToken
