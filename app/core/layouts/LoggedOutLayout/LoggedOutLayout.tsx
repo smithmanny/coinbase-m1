@@ -1,6 +1,5 @@
-import { Link, BlitzPage, Routes, Image } from "blitz"
+import { Link, BlitzPage, Image } from "blitz"
 
-import CryptoMiningLogo from "app/assets/svg/crypto-mining.svg"
 import CimeLogo from "app/assets/svg/cime.svg"
 import { makeStyles } from 'integrations/material-ui'
 
