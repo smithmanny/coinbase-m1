@@ -21,7 +21,6 @@ export default passportAuth((context) => ({
         clientID: process.env.BLITZ_PUBLIC_COINBASE_CLIENT_ID,
         clientSecret: process.env.BLITZ_PUBLIC_COINBASE_CLIENT_SECRET,
         callbackURL: `${process.env.BLITZ_PUBLIC_SITE_CALLBACK_URL}`,
-        // callbackURL: `${process.env.SITE_URL}/api/auth/coinbase/callback`,
         includeEmail: true,
       },
         async function (accessToken, refreshToken, profile: ProfileInterface, done) {

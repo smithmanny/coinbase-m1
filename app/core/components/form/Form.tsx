@@ -4,6 +4,8 @@ import { Form as FinalForm, FormProps as FinalFormProps } from "react-final-form
 import { FORM_ERROR } from "final-form"
 import * as z from "zod"
 
+import { makeStyles } from 'integrations/material-ui'
+
 import Button from '../shared/Button'
 import Grid from '../shared/Grid'
 
@@ -21,6 +23,13 @@ export interface FormProps<S extends z.ZodType<any, any>>
   onSuccess?: Function,
 }
 
+const styles = makeStyles((theme) => ({
+  submitButton: {
+    marginTop: theme.spacing(4),
+    padding: theme.spacing(1.5)
+  }
+}))
+
 export function Form<S extends z.ZodType<any, any>>({
   children,
   submitText,
@@ -32,6 +41,7 @@ export function Form<S extends z.ZodType<any, any>>({
   onSuccess,
   ...props
 }: FormProps<S>) {
+  const classes = styles();
   const _handleSubmit = async(values, form, cb) => {
     if (mutation && toVariables) {
       const variables = toVariables(values);
@@ -87,16 +97,15 @@ export function Form<S extends z.ZodType<any, any>>({
           )}
 
           {submitText && (
-            <Button type="submit" disabled={submitting}>
+            <Button
+              color="primary"
+              type="submit"
+              disabled={submitting}
+              className={classes.submitButton}
+            >
               {submitText}
             </Button>
           )}
-
-          <style>{`
-            .form > * + * {
-              margin-top: 1rem;
-            }
-          `}</style>
         </form>
       )}
     />

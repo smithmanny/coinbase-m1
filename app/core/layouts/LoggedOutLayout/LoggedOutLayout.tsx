@@ -41,12 +41,12 @@ const LoggedOutLayout: BlitzPage = (props) => {
         *Not affiliated with coinbase
       </Typography>
 
-    <Link href="/api/auth/coinbase">
-      <Button
-        variant="contained"
-        color="primary"
-        size="large"
-        className={classes.button}
+      <Link href="/api/auth/coinbase">
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          className={classes.button}
         >
           Get Started
         </Button>

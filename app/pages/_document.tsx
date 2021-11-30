@@ -39,14 +39,13 @@ class MyDocument extends Document {
       <Html lang="en">
         <DocumentHead />
         <Head>
+          <title>{"CIME"}</title>
           {/* Google Fonts */}
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
           />
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-          {/* Pinterest */}
-          <meta name="p:domain_verify" content="d9a0531c70e05a526b6dc638bb535a50" />
         </Head>
         <body>
           <Main />

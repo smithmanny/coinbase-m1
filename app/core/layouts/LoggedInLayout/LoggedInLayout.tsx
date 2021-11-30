@@ -1,7 +1,7 @@
 import React from 'react'
 import { BlitzPage, Routes, Link } from "blitz"
 import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
+import CardContent from "@material-ui/core/CardContent";
 
 import styles from './styles';
 import { CoinbaseAccountType } from "app/utils/coinbaseHelpers"
@@ -41,16 +41,19 @@ const LoggedinLayout: BlitzPage<PageProps> = (props) => {
           <Grid item xs={12}>
             <Typography variant="h4">Your Tokens</Typography>
           </Grid>
-          {wallets.accountsWithBalance.map(account => (
-            <Grid key={account.id} item md={3}>
-              <Card>
-                <CardHeader
-                  title={account.currency.code}
-                  subheader={account.balance.amount}
-                />
-              </Card>
-            </Grid>
-          ))}
+          <Grid item container spacing={4}>
+            {wallets.accountsWithBalance.map(account => (
+              <Grid key={account.id} item xs={6} sm={4} md={3}>
+                <Card>
+                  <CardContent>
+                    <Typography align="center" variant="h6">{account.currency.code}</Typography>
+                    <Typography align="center" variant="body2" gutterBottom>{account.currency.name}</Typography>
+                    <Typography align="center">{account.balance.amount}</Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
         </Grid>
       </ConsumerContainer>
     </React.Fragment>

@@ -1,4 +1,4 @@
-import { Ctx, Middleware, AuthenticationError } from "blitz"
+import { Ctx, Middleware, getSession, AuthenticationError } from "blitz"
 
 import {
   fetchCoinbaseApi,
@@ -22,12 +22,6 @@ import {
 //     await next()
 //   },
 // ]
-export const middleware: Middleware[] = [
-  async (req, res, next) => {
-    console.log(req.headers)
-    await next()
-  },
-]
 
 export default async function fetchCoinbaseWallets(input, ctx: Ctx) {
   ctx.session.$authorize();

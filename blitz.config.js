@@ -1,11 +1,21 @@
-const { sessionMiddleware, simpleRolesIsAuthorized } = require("blitz")
+const { sessionMiddleware, simpleRolesIsAuthorized, getSession} = require("blitz")
+import db from "db"
 
 module.exports = {
   middleware: [
     sessionMiddleware({
+      cookiePrefix: 'cime',
       isAuthorized: simpleRolesIsAuthorized,
       sessionExpiryMinutes: 120,
     }),
+    async(req, res, next) => {
+      const session = await getSession(req, res)
+      const handle = session.$handle
+
+      const f = await db.session.findFirst({ where: { handle }})
+      console.log(f)
+      return next()
+    },
   ],
   /* Uncomment this to customize the webpack config
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {

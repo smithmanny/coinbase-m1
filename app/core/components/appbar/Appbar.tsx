@@ -7,7 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import Toolbar from "@material-ui/core/Toolbar";
 import { default as MuiAppBar } from "@material-ui/core/AppBar";
 
-import Logo from "app/assets/svg/logo.svg"
+import Logo from "app/assets/svg/tiny-logo.svg"
 import styles from './styles';
 
 import AccountPopover from "app/core/components/accountPopover"
@@ -55,8 +55,8 @@ const Appbar = (props) => {
                 className={classes.logo}
                 alt="Logo"
                 src={Logo}
-                height={125}
-                width={125}
+                height={50}
+                width={50}
               />
             </Link>
           </Grid>

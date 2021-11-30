@@ -1,4 +1,6 @@
 import { BlitzPage, useMutation, useQuery, Routes } from "blitz"
+import InputAdornment from '@material-ui/core/InputAdornment';
+import { useForm } from 'react-final-form'
 
 import { makeStyles } from 'integrations/material-ui'
 import fetchPaymentMethodsQuery from "app/queries/fetchPaymentMethods"
@@ -13,6 +15,14 @@ import Layout from "app/core/layouts/Layout"
 
 const styles = makeStyles((theme) => ({
 }))
+
+const TotalSummary = (props) => {
+  const formData = useForm();
+  console.log(formData)
+  return (
+    <Typography></Typography>
+  )
+}
 
 const CreateBuy: BlitzPage = (props) => {
   const classes = styles();
@@ -30,6 +40,8 @@ const CreateBuy: BlitzPage = (props) => {
           try {
             await createBuyOrder({
               ...values,
+              selectedPaymentMethod: values.selectedPaymentMethod.value,
+              selectedTokens: values.selectedTokens.map(token => token.value)
             })
           } catch (err) {
             console.log(err)
@@ -43,8 +55,13 @@ const CreateBuy: BlitzPage = (props) => {
               <strong>Enter Amount</strong>
             </Typography>
             <TextField
+              required
               name="amount"
-              placeholder="$100.00"
+              placeholder="100.00"
+              type="number"
+              InputProps={{
+                startAdornment: <InputAdornment position="start">$</InputAdornment>
+              }}
             />
           </Grid>
           <Grid item xs={12}>
@@ -68,11 +85,13 @@ const CreateBuy: BlitzPage = (props) => {
               items={tokens.map(token => ({
                 label: token.code,
                 value: token.tokenId,
-                isFixed: token.isFixed,
               }))}
               isSearchable
               isMulti
             />
+          </Grid>
+          <Grid item xs={12}>
+            {/* <TotalSummary /> */}
           </Grid>
         </Grid>
       </Form>
