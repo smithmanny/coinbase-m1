@@ -14,13 +14,15 @@ import { Provider } from "react-redux";
 
 import store from "integrations/redux";
 import { theme } from "integrations/material-ui";
+
+import Loading from "app/core/components/Loading"
 import ReauthenicateCoinbase from "app/auth/components/ReauthenicateCoinbase"
 
 export default function App({ Component, pageProps }: AppProps) {
   const getLayout = Component.getLayout || ((page) => page)
 
   return (
-    <Suspense fallback="Loading">
+    <Suspense fallback={<Loading />}>
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <CssBaseline />

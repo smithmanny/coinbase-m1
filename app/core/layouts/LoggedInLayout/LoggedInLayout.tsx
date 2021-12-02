@@ -1,28 +1,19 @@
 import React from 'react'
-import { BlitzPage, Routes, Link } from "blitz"
+import { BlitzPage, Routes, Link, useQuery } from "blitz"
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 
 import styles from './styles';
-import { CoinbaseAccountType } from "app/utils/coinbaseHelpers"
+import fetchCoinbaseWalletsQuery from "app/queries/fetchCoinbaseWallets"
 
 import ConsumerContainer from "app/core/components/shared/ConsumerContainer"
 import Grid from "app/core/components/shared/Grid"
 import Typography from "app/core/components/shared/Typography"
 import Button from "app/core/components/shared/Button"
 
-interface WalletType {
-  accountsWithBalance: CoinbaseAccountType[]
-  allAccounts: CoinbaseAccountType[]
-}
-
-interface PageProps {
-  wallets: WalletType
-}
-
-const LoggedinLayout: BlitzPage<PageProps> = (props) => {
+const LoggedinLayout: BlitzPage = (props) => {
   const classes = styles();
-  const { wallets } = props;
+  const [wallets] = useQuery(fetchCoinbaseWalletsQuery, undefined)
   return (
     <React.Fragment>
       <ConsumerContainer>

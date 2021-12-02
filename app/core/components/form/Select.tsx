@@ -52,6 +52,7 @@ const Select: FunctionComponent<any> = (props) => {
         name={name}
         component={ReactSelectAdapter}
         options={items}
+        isSearchable
       />
     </Grid>
   )

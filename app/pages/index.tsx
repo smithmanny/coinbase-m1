@@ -1,8 +1,8 @@
-import { dynamic, BlitzPage, getSession, useSession, invokeWithMiddleware, SessionContext } from "blitz"
+import { dynamic, BlitzPage, useQuery, SessionContext } from "blitz"
 
-import fetchCoinbaseWalletsQuery from "app/queries/fetchCoinbaseWallets"
 import Layout from "app/core/layouts/Layout"
 import { CoinbaseAccountType } from "app/utils/coinbaseHelpers"
+import getCurrentUserQuery from "app/users/queries/getCurrentUser";
 
 interface WalletType {
   accountsWithBalance: CoinbaseAccountType[]
@@ -21,33 +21,11 @@ const LoggedOutLayout = dynamic(() =>
   import("app/core/layouts/LoggedOutLayout")
 );
 
-export const getServerSideProps = async ({ req, res }) => {
-  const session = await getSession(req, res)
+const Home: BlitzPage<PagePropType> = () => {
+  const [user] = useQuery(getCurrentUserQuery, undefined);
 
-  if (!session.userId) {
-    return {
-      props: {}
-    }
-  }
-
-  try {
-    const wallets = await invokeWithMiddleware(fetchCoinbaseWalletsQuery, {}, { req, res })
-
-    return {
-      props: {
-        wallets,
-      }
-    }
-  } catch (error) {
-    return { props: {}}
-  }
-}
-
-const Home: BlitzPage<PagePropType> = ({ wallets }) => {
-  const session = useSession()
-
-  if (session.userId) {
-    return <LoggedInLayout wallets={wallets} />
+  if (user) {
+    return <LoggedInLayout />
   }
   return (
     <LoggedOutLayout />

@@ -1,8 +1,10 @@
+import React, { useMemo } from 'react'
 import { BlitzPage, useMutation, useQuery, Routes } from "blitz"
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { useForm } from 'react-final-form'
+import { useFormState } from 'react-final-form'
 
 import { makeStyles } from 'integrations/material-ui'
+import { formatter } from "app/utils/money"
 import fetchPaymentMethodsQuery from "app/queries/fetchPaymentMethods"
 import createBuyOrderMutation from "app/mutations/createBuyOrder"
 import coinbaseTokensQuery from "app/queries/fetchCoinbaseTokens"
@@ -17,11 +19,20 @@ const styles = makeStyles((theme) => ({
 }))
 
 const TotalSummary = (props) => {
-  const formData = useForm();
-  console.log(formData)
-  return (
-    <Typography></Typography>
-  )
+  const formState = useFormState()
+  const values = formState.values;
+
+  if (values?.selectedTokens !== undefined && values?.amount !== undefined) {
+    const { amount, selectedTokens } = values;
+    const tokenValue = formatter.format(amount / selectedTokens.length)
+    return (
+      selectedTokens.map((token, i) => (
+        <Typography key={i}>{token.label} | {tokenValue}</Typography>
+      ))
+    )
+  }
+
+  return null
 }
 
 const CreateBuy: BlitzPage = (props) => {
@@ -74,6 +85,7 @@ const CreateBuy: BlitzPage = (props) => {
                 label: method.name,
                 value: method.id
               }))}
+              required
             />
           </Grid>
           <Grid item xs={12}>
@@ -88,10 +100,11 @@ const CreateBuy: BlitzPage = (props) => {
               }))}
               isSearchable
               isMulti
+              required
             />
           </Grid>
           <Grid item xs={12}>
-            {/* <TotalSummary /> */}
+            <TotalSummary />
           </Grid>
         </Grid>
       </Form>

@@ -1,4 +1,7 @@
-const { sessionMiddleware, simpleRolesIsAuthorized, getSession} = require("blitz")
+const { sessionMiddleware, simpleRolesIsAuthorized } = require("blitz")
+import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict'
+
+import { refreshTokens } from "app/utils/coinbaseHelpers"
 import db from "db"
 
 module.exports = {
@@ -8,12 +11,29 @@ module.exports = {
       isAuthorized: simpleRolesIsAuthorized,
       sessionExpiryMinutes: 120,
     }),
-    async(req, res, next) => {
-      const session = await getSession(req, res)
-      const handle = session.$handle
+    async (req, res, next) => {
+      const refreshToken = res.blitzCtx.session.refreshToken
+      const handle = res.blitzCtx.session.$handle
 
-      const f = await db.session.findFirst({ where: { handle }})
-      console.log(f)
+      if (handle) {
+        const userSession = await db.session.findFirst({ where: { handle } })
+
+        if (userSession?.expiresAt) {
+          const result = formatDistanceToNowStrict(userSession.expiresAt, { unit: "minute" }).split(' ')
+          const sessionExpiresIn = Number(result[0])
+
+          if (sessionExpiresIn <= 70) {
+            try {
+              const [newAccessToken, newRefreshToken] = await refreshTokens(refreshToken)
+              await res.blitzCtx.session.$setPublicData({ accessToken: newAccessToken, refreshToken: newRefreshToken })
+            } catch (error) {
+              await res.blitzCtx.session.$revoke()
+              throw new Error(error)
+            }
+          }
+        }
+      }
+
       return next()
     },
   ],
