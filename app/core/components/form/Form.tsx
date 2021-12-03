@@ -3,6 +3,7 @@ import { AuthenticationError } from "blitz"
 import { Form as FinalForm, FormProps as FinalFormProps } from "react-final-form"
 import { FORM_ERROR } from "final-form"
 import * as z from "zod"
+import { useSnackbar } from 'notistack';
 
 import { makeStyles } from 'integrations/material-ui'
 
@@ -42,6 +43,8 @@ export function Form<S extends z.ZodType<any, any>>({
   ...props
 }: FormProps<S>) {
   const classes = styles();
+  const { enqueueSnackbar } = useSnackbar();
+
   const _handleSubmit = async(values, form, cb) => {
     if (mutation && toVariables) {
       const variables = toVariables(values);
@@ -67,6 +70,11 @@ export function Form<S extends z.ZodType<any, any>>({
 
     // If no mutation is provided use custom onSubmit function
     if (onSubmit) {
+      if (typeof onSuccess === 'function') {
+        onSubmit(values, form, undefined);
+        return onSuccess();
+      }
+
       return onSubmit(values, form, undefined);
     }
 
@@ -92,7 +100,7 @@ export function Form<S extends z.ZodType<any, any>>({
 
           {submitError && (
             <div role="alert" style={{ color: "red" }}>
-              {submitError}
+              {enqueueSnackbar('Error')}
             </div>
           )}
 

@@ -11,6 +11,8 @@ import {
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { Provider } from "react-redux";
+import { SnackbarProvider } from 'notistack';
+import Slide from '@material-ui/core/Slide';
 
 import store from "integrations/redux";
 import { theme } from "integrations/material-ui";
@@ -22,19 +24,28 @@ export default function App({ Component, pageProps }: AppProps) {
   const getLayout = Component.getLayout || ((page) => page)
 
   return (
-    <Suspense fallback={<Loading />}>
-      <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <ErrorBoundary
-            FallbackComponent={RootErrorFallback}
-            onReset={useQueryErrorResetBoundary().reset}
-          >
-            {getLayout(<Component {...pageProps} />)}
-          </ErrorBoundary>
-        </ThemeProvider>
-      </Provider>
-    </Suspense>
+    <SnackbarProvider
+      maxSnack={3}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'center',
+      }}
+      TransitionComponent={Slide}
+    >
+      <Suspense fallback={<Loading />}>
+        <Provider store={store}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <ErrorBoundary
+              FallbackComponent={RootErrorFallback}
+              onReset={useQueryErrorResetBoundary().reset}
+            >
+              {getLayout(<Component {...pageProps} />)}
+            </ErrorBoundary>
+          </ThemeProvider>
+        </Provider>
+      </Suspense>
+    </SnackbarProvider>
   );
 }
 

@@ -1,8 +1,9 @@
 import React from 'react'
-import { BlitzPage, useMutation, useQuery, Routes } from "blitz"
+import { BlitzPage, useMutation, useQuery, useRouter } from "blitz"
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { useFormState } from 'react-final-form'
 import Chip from '@material-ui/core/Chip';
+import { useSnackbar } from 'notistack';
 
 import { formatter } from "app/utils/money"
 import fetchPaymentMethodsQuery from "app/queries/fetchPaymentMethods"
@@ -21,9 +22,14 @@ const TotalSummary = (props) => {
 
   if (values?.selectedTokens !== undefined && values?.amount !== undefined) {
     const { amount, selectedTokens } = values;
-    const tokenValue = formatter.format(amount / selectedTokens.length)
+    const pricePerToken = amount / selectedTokens.length;
+    const coinbaseFee = pricePerToken * (3 / 100);
+    const tokenValue = formatter.format(pricePerToken - coinbaseFee)
     return (
       <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Typography variant="caption">*Estimate with coinbase fee</Typography>
+        </Grid>
         {selectedTokens.map((token, i) => (
           <Grid key={i} item>
             <Chip
@@ -42,6 +48,9 @@ const CreateBuy: BlitzPage = (props) => {
   const [paymentMethods] = useQuery(fetchPaymentMethodsQuery, undefined)
   const [tokens] = useQuery(coinbaseTokensQuery, undefined)
   const [createBuyOrder] = useMutation(createBuyOrderMutation)
+  const { enqueueSnackbar } = useSnackbar();
+  const router = useRouter()
+
   return (
     <ConsumerContainer maxWidth="sm">
       <Form
@@ -60,7 +69,14 @@ const CreateBuy: BlitzPage = (props) => {
             console.log(err)
           }
         }}
-        onSuccess={() => Routes.Home()}
+        onSuccess={() => {
+          enqueueSnackbar('Token purchase successful!',
+          {
+            variant: 'success',
+            preventDuplicate: true,
+          })
+          router.push('/')
+        }}
       >
         <Grid container spacing={4}>
           <Grid item xs={12}>

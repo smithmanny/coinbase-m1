@@ -46,6 +46,7 @@
     "final-form": "4.20.2",
     "mdi-material-ui": "6.22.1",
     "mui-rff": "3.0.10",
+    "notistack": "1.0.10",
     "passport-coinbase": "0.1.4",
     "prisma": "~2.26.0",
     "prop-types": "15.7.2",

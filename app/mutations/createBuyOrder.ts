@@ -7,7 +7,7 @@ import { formatter } from 'app/utils/money'
 
 const CreateBuyOrder = z
   .object({
-    amount: z.number(),
+    amount: z.string(),
     selectedTokens: z.array(z.string()),
     selectedPaymentMethod: z.string(),
   })
@@ -19,24 +19,24 @@ export default async function createBuyOrder(
   ctx.session.$authorize()
 
   const accessToken = crypt.decrypt(ctx.session.accessToken);
-  const submittedOrders = [];
+  const submittedOrders:any = [];
   const data = CreateBuyOrder.parse(input)
   const tokenLength = data.selectedTokens.length
-  const totalAmount = formatter.format(data.amount / tokenLength)
+  const amount = Number(data.amount);
+  const totalAmount = formatter.format(amount / tokenLength)
 
-  // data.selectedTokens.map(token => {
-  //   const body = {
-  //     currency: 'USD',
-  //     total: String(totalAmount),
-  //     payment_method: data.selectedPaymentMethod,
-  //   }
-  //   fetchCoinbaseApi('POST', accessToken, `accounts/${token}/buys`, body)
-  //   .then(order => {
-  //     console.log('ORDER SUBMTTED', order)
-  //     submittedOrders.push(order)
-  //   })
-  //   .catch(err => console.log('ERROR SUBMITTING ORDERS', err))
-  // })
+  data.selectedTokens.map(token => {
+    const body = {
+      currency: 'USD',
+      total: String(totalAmount),
+      payment_method: data.selectedPaymentMethod,
+    }
+    fetchCoinbaseApi({ method: 'POST', accessToken, route: `accounts/${token}/buys`, body })
+    .then(order => {
+      submittedOrders.push(order)
+    })
+    .catch(err => console.log('ERROR SUBMITTING ORDERS', err))
+  })
 
   return submittedOrders
 }
