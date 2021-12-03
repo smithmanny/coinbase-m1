@@ -37,6 +37,7 @@ CREATE TABLE "Token" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "code" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "tokenId" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
 );
@@ -52,6 +53,9 @@ CREATE UNIQUE INDEX "Token.code_unique" ON "Token"("code");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Token.name_unique" ON "Token"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Token.tokenId_unique" ON "Token"("tokenId");
 
 -- AddForeignKey
 ALTER TABLE "Session" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;

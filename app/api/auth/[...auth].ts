@@ -2,6 +2,7 @@ import { passportAuth } from "blitz"
 const CoinbaseStrategy = require('passport-coinbase').Strategy;
 
 import db from "db"
+import crypt from "app/utils/crypto"
 
 interface ProfileInterface {
   displayName: string,
@@ -44,12 +45,15 @@ export default passportAuth((context) => ({
             },
           })
 
+          const hashedAccessToken = crypt.encrypt(accessToken)
+          const hashedRefreshToken = crypt.encrypt(refreshToken)
+
           const publicData = {
             userId: user.id,
             role: user.role,
             source: "coinbase",
-            accessToken,
-            refreshToken
+            accessToken: hashedAccessToken,
+            refreshToken: hashedRefreshToken
           }
 
           done(undefined, { publicData })

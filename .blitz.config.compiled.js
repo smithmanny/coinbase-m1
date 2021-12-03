@@ -50,6 +50,22 @@ var refreshTokens = async (refreshToken) => {
   }
 };
 
+// app/utils/crypto.ts
+var import_crypto_js = __toModule(require("crypto-js"));
+var crypt = {
+  secret: process.env.BLITZ_PUBLIC_ENCRYPTION_KEY,
+  encrypt: function(clear) {
+    const cipher = import_crypto_js.default.AES.encrypt(clear, crypt.secret).toString();
+    return cipher;
+  },
+  decrypt: function(cipher) {
+    let decipher = import_crypto_js.default.AES.decrypt(cipher, crypt.secret);
+    decipher = decipher.toString(import_crypto_js.default.enc.Utf8);
+    return decipher;
+  }
+};
+var crypto_default = crypt;
+
 // db/index.ts
 var db_exports = {};
 __export(db_exports, {
@@ -71,7 +87,6 @@ module.exports = {
       sessionExpiryMinutes: 120
     }),
     async (req, res, next) => {
-      const refreshToken = res.blitzCtx.session.refreshToken;
       const handle = res.blitzCtx.session.$handle;
       if (handle) {
         const userSession = await db_default.session.findFirst({where: {handle}});
@@ -80,8 +95,12 @@ module.exports = {
           const sessionExpiresIn = Number(result[0]);
           if (sessionExpiresIn <= 70) {
             try {
+              const token = res.blitzCtx.session.refreshToken;
+              const refreshToken = crypto_default.decrypt(token);
               const [newAccessToken, newRefreshToken] = await refreshTokens(refreshToken);
-              await res.blitzCtx.session.$setPublicData({accessToken: newAccessToken, refreshToken: newRefreshToken});
+              const hashedAccessToken = crypto_default.encrypt(newAccessToken);
+              const hashedRefreshToken = crypto_default.encrypt(newRefreshToken);
+              await res.blitzCtx.session.$setPublicData({accessToken: hashedAccessToken, refreshToken: hashedRefreshToken});
             } catch (error) {
               await res.blitzCtx.session.$revoke();
               throw new Error(error);

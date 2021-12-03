@@ -4,11 +4,12 @@ import {
   fetchCoinbaseApi,
   CoinbaseAccountType,
   CoinbaseAccountDataType } from "app/utils/coinbaseHelpers"
+import crypt from "app/utils/crypto"
 
 export default async function fetchCoinbaseWallets(input, ctx: Ctx) {
   ctx.session.$authorize();
 
-  const accessToken = ctx.session.accessToken
+  const accessToken = crypt.decrypt(ctx.session.accessToken)
 
   const filterCoinbaseWallets = (balance) => {
     switch (balance) {

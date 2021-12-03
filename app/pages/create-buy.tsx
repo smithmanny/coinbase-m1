@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { BlitzPage, useMutation, useQuery, Routes } from "blitz"
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { useFormState } from 'react-final-form'
+import Chip from '@material-ui/core/Chip';
 
-import { makeStyles } from 'integrations/material-ui'
 import { formatter } from "app/utils/money"
 import fetchPaymentMethodsQuery from "app/queries/fetchPaymentMethods"
 import createBuyOrderMutation from "app/mutations/createBuyOrder"
@@ -15,9 +15,6 @@ import Grid from 'app/core/components/shared/Grid'
 import Typography from 'app/core/components/shared/Typography'
 import Layout from "app/core/layouts/Layout"
 
-const styles = makeStyles((theme) => ({
-}))
-
 const TotalSummary = (props) => {
   const formState = useFormState()
   const values = formState.values;
@@ -26,9 +23,15 @@ const TotalSummary = (props) => {
     const { amount, selectedTokens } = values;
     const tokenValue = formatter.format(amount / selectedTokens.length)
     return (
-      selectedTokens.map((token, i) => (
-        <Typography key={i}>{token.label} | {tokenValue}</Typography>
-      ))
+      <Grid container spacing={2}>
+        {selectedTokens.map((token, i) => (
+          <Grid key={i} item>
+            <Chip
+              label={`${token.label} • ${tokenValue}`}
+            />
+          </Grid>
+        ))}
+      </Grid>
     )
   }
 
@@ -36,7 +39,6 @@ const TotalSummary = (props) => {
 }
 
 const CreateBuy: BlitzPage = (props) => {
-  const classes = styles();
   const [paymentMethods] = useQuery(fetchPaymentMethodsQuery, undefined)
   const [tokens] = useQuery(coinbaseTokensQuery, undefined)
   const [createBuyOrder] = useMutation(createBuyOrderMutation)

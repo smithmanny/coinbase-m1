@@ -1,11 +1,12 @@
 import { Ctx } from "blitz"
 
 import { fetchCoinbaseApi } from "app/utils/coinbaseHelpers"
+import crypt from "app/utils/crypto"
 
 export default async function fetchPaymentMethods(input, ctx: Ctx) {
   ctx.session.$authorize();
 
-  const accessToken = ctx.session.accessToken
+  const accessToken = crypt.decrypt(ctx.session.accessToken)
   let paymentMethods;
 
   try {

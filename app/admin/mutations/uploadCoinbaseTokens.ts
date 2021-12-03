@@ -1,20 +1,20 @@
-import { AuthenticationError, Ctx } from "blitz"
-import * as z from "zod"
+import { Ctx } from "blitz"
 
 import {
   fetchCoinbaseApi,
-  CoinbaseAccountType,
   CoinbaseAccountDataType
 } from "app/utils/coinbaseHelpers"
+import crypt from "app/utils/crypto"
 import db from "db"
 
 export default async function uploadCoinbaseTokens(
   input,
   ctx: Ctx
 ) {
-  const accessToken = ctx.session.accessToken;
   // Require user to be logged in
   ctx.session.$authorize()
+
+  const accessToken = crypt.decrypt(ctx.session.accessToken);
 
   const fetchTokens = async (url = "accounts?limit=100"): Promise<void> => {
     try {
