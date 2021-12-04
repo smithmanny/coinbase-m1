@@ -43,7 +43,7 @@ class MyDocument extends Document {
           {/* Google Fonts */}
           <link
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
+            href="https://fonts.googleapis.com/css?family=Roboto&display=optional"
           />
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
         </Head>
@@ -64,6 +64,11 @@ class MyDocument extends Document {
 
             main {
               flex: 1
+            }
+
+            a {
+              color: #1652f0;
+              text-decoration: none;
             }
           `}</style>
         </body>
