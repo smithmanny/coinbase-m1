@@ -24,6 +24,9 @@ const styles = makeStyles((theme) => ({
   subHeading: {
     textTransform: "capitalize"
   },
+  productHunt: {
+    marginTop: theme.spacing(8)
+  },
 }));
 
 const LoggedOutLayout: BlitzPage = (props) => {
@@ -51,6 +54,17 @@ const LoggedOutLayout: BlitzPage = (props) => {
           Get Started
         </Button>
       </Link>
+
+      <div className={classes.productHunt}>
+        <a href="https://www.producthunt.com/posts/cime?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-cime" target="_blank" rel="noreferrer">
+          <Image
+            alt="CIME - M1 but for Coinbase | Product Hunt"
+            src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=321826&theme=dark"
+            height={54}
+            width={250}
+          />
+        </a>
+      </div>
     </ConsumerContainer>
   )
 }

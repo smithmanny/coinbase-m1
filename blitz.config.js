@@ -6,6 +6,9 @@ import crypt from "app/utils/crypto"
 import db from "db"
 
 module.exports = {
+  images: {
+    domains: ["api.producthunt.com"],
+  },
   middleware: [
     sessionMiddleware({
       cookiePrefix: 'cime',

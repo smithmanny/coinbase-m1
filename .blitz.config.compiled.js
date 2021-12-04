@@ -80,6 +80,9 @@ var db_default = new EnhancedPrisma();
 // blitz.config.js
 var {sessionMiddleware, simpleRolesIsAuthorized} = require("blitz");
 module.exports = {
+  images: {
+    domains: ["api.producthunt.com"]
+  },
   middleware: [
     sessionMiddleware({
       cookiePrefix: "cime",

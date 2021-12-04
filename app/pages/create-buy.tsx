@@ -75,7 +75,8 @@ const CreateBuy: BlitzPage = (props) => {
             variant: 'success',
             preventDuplicate: true,
           })
-          router.push('/')
+
+          setTimeout(() => router.push('/'), 2000)
         }}
       >
         <Grid container spacing={4}>
